@@ -935,3 +935,424 @@ body {
     }
 }
 
+
+
+/* Main Wrapper for overall layout */
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%); /* Light blue gradient */
+    padding: 20px 0;
+}
+
+.container {
+    flex-grow: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Header Enhancements */
+.header {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 25px;
+    padding: 40px;
+    margin-bottom: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border: none;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 3.5rem;
+    color: #2c3e50;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.header p {
+    font-size: 1.4rem;
+    color: #7f8c8d;
+    margin-bottom: 25px;
+}
+
+/* Bridge Status Section */
+#bridge-status, #palestinian-bridge-status {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#bridge-status span, #palestinian-bridge-status span {
+    margin: 0 5px;
+}
+
+.status-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-left: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    animation: pulse 1.5s infinite alternate;
+}
+
+.status-open {
+    background-color: #2ecc71; /* Emerald Green */
+}
+
+.status-closed {
+    background-color: #e74c3c; /* Alizarin Red */
+}
+
+.status-limited {
+    background-color: #f1c40f; /* Sunflower Yellow */
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.1); opacity: 0.7; }
+}
+
+/* Grid Layout for Cards */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+/* Card Enhancements */
+.card {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 25px;
+    padding: 35px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    border: none;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+    pointer-events: none;
+    transform: scale(0);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.6s ease;
+}
+
+.card:hover::before {
+    transform: scale(2);
+    opacity: 1;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.card h2 {
+    font-size: 1.8rem;
+    color: #34495e;
+    font-weight: 700;
+    margin-right: 15px;
+}
+
+/* Icon Styles */
+.card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.card:hover .card-icon {
+    transform: rotate(5deg) scale(1.1);
+}
+
+.news-icon {
+    background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%); /* Purple to Blue */
+    color: white;
+}
+
+.schedule-icon {
+    background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%); /* Pink to Red */
+    color: white;
+}
+
+.traffic-icon {
+    background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%); /* Light Blue to Cyan */
+    color: white;
+}
+
+.taxi-icon {
+    background: linear-gradient(45deg, #FFD700 0%, #FFA500 100%); /* Gold to Orange */
+    color: white;
+}
+
+.weather-icon {
+    background: linear-gradient(45deg, #ffecd2 0%, #fcb69f 100%); /* Peach to Coral */
+    color: white;
+}
+
+.alerts-icon {
+    background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 100%); /* Light Red to Light Pink */
+    color: white;
+}
+
+/* Button Styles */
+.refresh-btn {
+    background: linear-gradient(45deg, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 25px;
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+}
+
+.refresh-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.6);
+}
+
+/* Footer Styles */
+.footer {
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); /* Dark Blue Gradient */
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 50px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.footer p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+}
+
+/* JETT Info Card */
+.jett-info {
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    border-radius: 25px;
+    padding: 30px;
+    margin-bottom: 40px;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    border: none;
+}
+
+.jett-info h2 {
+    color: #007bff;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.jett-info p {
+    color: #555;
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.jett-info a {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+.jett-info a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
+}
+
+/* Traffic and Weather enhancements */
+.traffic-level, .weather-item {
+    background: #f0f2f5;
+    border-radius: 15px;
+    padding: 18px;
+    margin-bottom: 12px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.traffic-bar {
+    height: 10px;
+    border-radius: 5px;
+}
+
+.stat-item {
+    background: #e6f7ff;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.1);
+}
+
+.stat-value {
+    color: #007bff;
+}
+
+/* Alerts */
+.alert {
+    background: linear-gradient(145deg, #fffde7, #fffacd);
+    border: none;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(255, 235, 59, 0.2);
+}
+
+.alert-warning {
+    background: linear-gradient(145deg, #ffebee, #ffcdd2);
+    box-shadow: 0 5px 15px rgba(244, 67, 54, 0.2);
+}
+
+.alert-title {
+    color: #d35400;
+}
+
+.alert-warning .alert-title {
+    color: #c0392b;
+}
+
+.alert-recommendations li:before {
+    color: #d35400;
+}
+
+/* News Item */
+.news-item {
+    background: #f0f2f5;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-right: 6px solid #667eea;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.news-item:hover {
+    background: #e0e2e5;
+}
+
+.news-title {
+    color: #34495e;
+}
+
+.news-date {
+    color: #7f8c8d;
+}
+
+/* Schedule Table */
+.schedule-table {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.schedule-table th {
+    background: linear-gradient(45deg, #f0f2f5, #e0e2e5);
+    color: #34495e;
+    font-weight: 700;
+}
+
+.schedule-table td {
+    background: #ffffff;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.schedule-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2.5rem;
+    }
+    .header p {
+        font-size: 1.1rem;
+    }
+    .card {
+        padding: 25px;
+    }
+    .card-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+    .refresh-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+    .jett-info h2 {
+        font-size: 1.6rem;
+    }
+    .jett-info p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+    .header p {
+        font-size: 1rem;
+    }
+    .card {
+        padding: 20px;
+    }
+    .card-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 22px;
+    }
+    .refresh-btn {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+    }
+    .jett-info h2 {
+        font-size: 1.4rem;
+    }
+    .jett-info p {
+        font-size: 0.9rem;
+    }
+}
+
