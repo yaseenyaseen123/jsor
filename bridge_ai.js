@@ -6,6 +6,9 @@ class KingHusseinBridgeAI {
             predictions: {}
         };
         this.eventData = [];
+        this.weatherApiKey = "fb817733e4b94ce6be171837252806"; // مفتاح API الخاص بك
+        this.weatherApiUrl = "http://api.weatherapi.com/v1/current.json";
+        this.weatherData = {};
         this.isInitialized = false;
         
         this.init();
@@ -14,6 +17,7 @@ class KingHusseinBridgeAI {
     async init() {
         console.log("🤖 تهيئة نظام الذكاء الاصطناعي...");
         await this.loadHistoricalData();
+        await this.getCurrentWeather();
 
         this.startRealTimeMonitoring();
         this.isInitialized = true;
@@ -39,7 +43,18 @@ class KingHusseinBridgeAI {
         });
     }
 
-
+    // الحصول على بيانات الطقس
+    async getCurrentWeather() {
+        try {
+            const response = await fetch(`${this.weatherApiUrl}?key=${this.weatherApiKey}&q=Amman&aqi=no`);
+            const data = await response.json();
+            this.weatherData = data.current;
+            console.log("☀️ بيانات الطقس:", this.weatherData);
+        } catch (error) {
+            console.error("❌ خطأ في جلب بيانات الطقس:", error);
+            this.weatherData = {}; // مسح البيانات في حالة الخطأ
+        }
+    }
 
     // بدء المراقبة في الوقت الفعلي
     startRealTimeMonitoring() {
@@ -47,6 +62,7 @@ class KingHusseinBridgeAI {
             this.updateCurrentTraffic();
             this.generatePredictions();
             this.detectAnomalies();
+            this.getCurrentWeather(); // تحديث الطقس بشكل دوري
             this.updateBridgeStatus();
 
         }, 30000); // تحديث كل 30 ثانية
@@ -61,19 +77,49 @@ class KingHusseinBridgeAI {
 
         // إضافة عشوائية للمحاكاة
         const randomFactor = 0.8 + Math.random() * 0.4; // 0.8 to 1.2
-
+        const weatherImpact = this.getWeatherImpact();
 
         this.trafficData.current = {
             timestamp: new Date(),
-            waitTime: Math.round(baseData.avgWaitTime * randomFactor),
+            waitTime: Math.round(baseData.avgWaitTime * randomFactor * weatherImpact.multiplier),
             vehicleCount: Math.round(baseData.vehicleCount * randomFactor),
-            congestionLevel: this.calculateCongestionLevel(baseData.avgWaitTime * randomFactor),
+            congestionLevel: this.calculateCongestionLevel(baseData.avgWaitTime * randomFactor * weatherImpact.multiplier),
             roadConditions: this.assessRoadConditions(),
             estimatedProcessingTime: this.calculateProcessingTime()
         };
     }
 
+    // تأثير الطقس على الازدحام
+    getWeatherImpact() {
+        if (!this.weatherData || !this.weatherData.condition) {
+            return { multiplier: 1, description: "لا توجد بيانات طقس" };
+        }
 
+        const condition = this.weatherData.condition.text.toLowerCase();
+        const tempC = this.weatherData.temp_c;
+
+        let multiplier = 1;
+        let description = "طقس طبيعي";
+
+        if (condition.includes("rain") || condition.includes("shower")) {
+            multiplier = 1.3; // 30% زيادة في الازدحام
+            description = "أمطار متوقعة";
+        } else if (condition.includes("snow") || condition.includes("sleet")) {
+            multiplier = 1.8; // 80% زيادة في الازدحام
+            description = "ثلوج / جليد";
+        } else if (condition.includes("cloudy") || condition.includes("overcast")) {
+            multiplier = 1.1; // 10% زيادة في الازدحام
+            description = "غائم جزئياً";
+        } else if (tempC > 35) {
+            multiplier = 1.2; // 20% زيادة في الازدحام بسبب الحرارة الشديدة
+            description = "حرارة شديدة";
+        } else if (tempC < 5) {
+            multiplier = 1.15; // 15% زيادة في الازدحام بسبب البرودة الشديدة
+            description = "برودة شديدة";
+        }
+
+        return { multiplier, description };
+    }
 
     // حساب مستوى الازدحام
     calculateCongestionLevel(waitTime) {
@@ -85,7 +131,13 @@ class KingHusseinBridgeAI {
     // تقييم حالة الطرق
     assessRoadConditions() {
         const conditions = ["excellent", "good", "fair", "poor"];
-        const index = Math.min(Math.floor(Math.random() * 2), 3);
+        const weatherImpact = this.getWeatherImpact();
+        let index = Math.min(Math.floor(Math.random() * 2), 3);
+
+        // تأثير الطقس على حالة الطرق
+        if (weatherImpact.multiplier > 1.2) { // إذا كان الطقس سيئاً
+            index = Math.min(index + 1, 3); // زيادة سوء حالة الطريق
+        }
         return conditions[index];
     }
 
@@ -259,7 +311,17 @@ class KingHusseinBridgeAI {
             }
         }
 
-
+        // توصيات بناءً على الطقس
+        if (this.weatherData.condition) {
+            const weatherRec = this.getWeatherImpact();
+            if (weatherRec.multiplier > 1) {
+                recommendations.push({
+                    type: "weather_impact",
+                    message: `تأثر حركة المرور بالطقس: ${weatherRec.description}`,
+                    icon: "☁️"
+                });
+            }
+        }
 
         return recommendations;
     }
@@ -269,6 +331,7 @@ class KingHusseinBridgeAI {
         return {
             current: this.trafficData.current,
             predictions: this.trafficData.predictions,
+            weather: this.weatherData,
             recommendations: this.getSmartRecommendations(),
             systemStatus: {
                 isOnline: true,
@@ -348,28 +411,5 @@ class KingHusseinBridgeAI {
         document.getElementById("bridge-status").innerHTML = `حالة الجسر الأردني: <span class="${jordanStatusClass.split(" ")[1]}"></span> ${jordanStatusText}`;
         document.getElementById("palestinian-bridge-status").innerHTML = `حالة الجسر الفلسطيني: <span class="${palestineStatusClass}"></span> ${palestineStatusText}`;
     }
+}
 
-    // وظيفة تبديل الألوان
-    function applyTheme(theme) {
-        document.body.className = ''; // Remove existing theme classes
-        if (theme !== 'default') {
-            document.body.classList.add(theme + '-theme');
-        }
-        localStorage.setItem('selectedTheme', theme);
-    }
-
-    // تهيئة محدد الألوان عند تحميل الصفحة
-    document.addEventListener('DOMContentLoaded', function() {
-        const themeSelect = document.getElementById('theme-select');
-        if (themeSelect) {
-            // Load saved theme
-            const savedTheme = localStorage.getItem('selectedTheme') || 'default';
-            applyTheme(savedTheme);
-            themeSelect.value = savedTheme;
-
-            // Add event listener for theme changes
-            themeSelect.addEventListener('change', function() {
-                applyTheme(this.value);
-            });
-        }
-    });
