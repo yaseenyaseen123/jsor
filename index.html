@@ -137,27 +137,25 @@
                 </div>
                 <div class="weather-info" id="weather-content">
                     <div class="weather-item">
+                        <img id="weather-icon" src="" alt="Weather Icon" class="weather-icon-img">
+                    </div>
+                    <div class="weather-item">
                         <div class="weather-value" id="temperature">--°</div>
                         <div class="weather-label">درجة الحرارة</div>
                     </div>
                     <div class="weather-item">
-                        <div class="weather-value" id="visibility">-- كم</div>
-                        <div class="weather-label">مدى الرؤية</div>
+                        <div class="weather-value" id="weather-condition">--</div>
+                        <div class="weather-label">الحالة العامة</div>
                     </div>
                     <div class="weather-item">
                         <div class="weather-value" id="wind-speed">-- كم/س</div>
                         <div class="weather-label">سرعة الرياح</div>
                     </div>
                     <div class="weather-item">
-                        <div class="weather-value" id="weather-condition">--</div>
-                        <div class="weather-label">الحالة العامة</div>
+                        <div class="weather-value" id="visibility">-- كم</div>
+                        <div class="weather-label">مدى الرؤية</div>
                     </div>
                 </div>
-                <button class="refresh-btn" onclick="refreshWeather()">تحديث الطقس</button>
-            </div>
-
-            <!-- قسم التنبيهات -->
-            <div clas            <!-- قسم التنبيهات والإشعارات -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-icon alerts-icon">🔔</div                    <h2>صدقة جارية</h2>               </div>
@@ -355,19 +353,6 @@
             `).join('') + statsGrid.outerHTML;
         }
 
-        // تحديث الطقس (محاكاة)
-        function refreshWeather() {
-            const temperature = Math.floor(Math.random() * 15) + 20; // 20-35 C
-            const visibility = Math.floor(Math.random() * 10) + 5; // 5-15 km
-            const windSpeed = Math.floor(Math.random() * 20) + 5; // 5-25 km/h
-            const conditions = ['مشمس', 'غائم', 'ممطر', 'عاصف'];
-            const condition = conditions[Math.floor(Math.random() * conditions.length)];
-
-            document.getElementById('temperature').textContent = temperature + '°';
-            document.getElementById('visibility').textContent = visibility + ' كم';
-            document.getElementById('wind-speed').textContent = windSpeed + ' كم/س';
-            document.getElementById('weather-condition').textContent = condition;
-        }
 
         // تحديث التنبيهات (محاكاة)
         function refreshAlerts() {

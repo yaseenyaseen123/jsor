@@ -9,6 +9,8 @@ class KingHusseinBridgeAI {
         this.weatherData = {};
         this.eventData = [];
         this.isInitialized = false;
+        this.weatherApiKey = "7b198c62204b4a00ae271723252806"; // مفتاح API الخاص بك
+        this.weatherApiUrl = "http://api.weatherapi.com/v1/current.json";
         
         this.init();
     }
@@ -41,20 +43,43 @@ class KingHusseinBridgeAI {
         });
     }
 
-    // محاكاة الحصول على بيانات الطقس
+    // الحصول على بيانات الطقس الحقيقية من WeatherAPI.com
     async getCurrentWeather() {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                const weatherConditions = ["sunny", "cloudy", "rainy", "windy"];
+        try {
+            const response = await fetch(`${this.weatherApiUrl}?key=${this.weatherApiKey}&q=Amman&aqi=no`);
+            const data = await response.json();
+
+            if (data && data.current) {
                 this.weatherData = {
-                    condition: weatherConditions[Math.floor(Math.random() * weatherConditions.length)],
-                    temperature: Math.floor(Math.random() * 20) + 20, // 20-40 درجة
-                    visibility: Math.floor(Math.random() * 5) + 5, // 5-10 كم
-                    windSpeed: Math.floor(Math.random() * 20) + 5 // 5-25 كم/س
+                    condition: data.current.condition.text,
+                    temperature: data.current.temp_c,
+                    visibility: data.current.vis_km,
+                    windSpeed: data.current.wind_kph,
+                    icon: data.current.condition.icon
                 };
-                resolve();
-            }, 300);
-        });
+                console.log("✅ تم تحديث بيانات الطقس:", this.weatherData);
+            } else {
+                console.error("❌ فشل في جلب بيانات الطقس:", data);
+                // استخدام بيانات افتراضية في حالة الفشل
+                this.weatherData = {
+                    condition: "غير معروف",
+                    temperature: "--",
+                    visibility: "--",
+                    windSpeed: "--",
+                    icon: ""
+                };
+            }
+        } catch (error) {
+            console.error("❌ خطأ في الاتصال بـ WeatherAPI:", error);
+            // استخدام بيانات افتراضية في حالة الخطأ
+            this.weatherData = {
+                condition: "غير معروف",
+                temperature: "--",
+                visibility: "--",
+                windSpeed: "--",
+                icon: ""
+            };
+        }
     }
 
     // بدء المراقبة في الوقت الفعلي
@@ -63,7 +88,8 @@ class KingHusseinBridgeAI {
             this.updateCurrentTraffic();
             this.generatePredictions();
             this.detectAnomalies();
-            this.updateBridgeStatus(); // إضافة تحديث حالة الجسر
+            this.updateBridgeStatus();
+            this.getCurrentWeather(); // تحديث الطقس بشكل دوري
         }, 30000); // تحديث كل 30 ثانية
         this.updateBridgeStatus(); // تحديث فوري عند التحميل
     }
@@ -90,12 +116,12 @@ class KingHusseinBridgeAI {
 
     // تأثير الطقس على الازدحام
     getWeatherImpact() {
-        switch(this.weatherData.condition) {
-            case "rainy": return 1.3; // زيادة 30% في الازدحام
-            case "windy": return 1.1; // زيادة 10%
-            case "cloudy": return 1.05; // زيادة 5%
-            default: return 1.0; // طقس عادي
-        }
+        // تأثير الطقس بناءً على بيانات WeatherAPI
+        const condition = this.weatherData.condition ? this.weatherData.condition.toLowerCase() : "";
+        if (condition.includes("rain")) return 1.3; // زيادة 30% في الازدحام
+        if (condition.includes("wind")) return 1.1; // زيادة 10%
+        if (condition.includes("cloud")) return 1.05; // زيادة 5%
+        return 1.0; // طقس عادي
     }
 
     // حساب مستوى الازدحام
@@ -108,7 +134,7 @@ class KingHusseinBridgeAI {
     // تقييم حالة الطرق
     assessRoadConditions() {
         const conditions = ["excellent", "good", "fair", "poor"];
-        const weatherImpact = this.weatherData.condition === "rainy" ? 2 : 0;
+        const weatherImpact = (this.weatherData.condition && this.weatherData.condition.toLowerCase().includes("rain")) ? 2 : 0;
         const index = Math.min(Math.floor(Math.random() * 2) + weatherImpact, 3);
         return conditions[index];
     }
@@ -127,14 +153,37 @@ class KingHusseinBridgeAI {
 
     // توليد التوقعات
     generatePredictions() {
-        const currentHour = new Date().getHours();
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentDay = now.getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+
         const predictions = [];
 
         // توقعات للساعات الثلاث القادمة
         for (let i = 1; i <= 3; i++) {
-            const futureHour = (currentHour + i) % 24;
-            const historicalData = this.trafficData.historical.find(h => h.hour === futureHour);
+            const futureTime = new Date(now.getTime() + i * 60 * 60 * 1000);
+            const futureHour = futureTime.getHours();
+            const futureDay = futureTime.getDay();
+
+            let historicalData = this.trafficData.historical.find(h => h.hour === futureHour);
             
+            // تعديل البيانات التاريخية بناءً على اليوم (للتوافق مع ساعات عمل الجسر)
+            if (futureDay === 6) { // السبت مغلق
+                historicalData = { avgWaitTime: 0, vehicleCount: 0, congestionLevel: "closed" };
+            } else if (futureDay === 5) { // الجمعة
+                if (futureHour >= 8 && futureHour < 13) { // 8:30 ص - 1:00 ظ
+                    // استخدم البيانات التاريخية العادية
+                } else {
+                    historicalData = { avgWaitTime: 0, vehicleCount: 0, congestionLevel: "closed" };
+                }
+            } else { // الأحد - الخميس
+                if (futureHour >= 8 && futureHour < 14) { // 8:00 ص - 2:00 ظ
+                    // استخدم البيانات التاريخية العادية
+                } else {
+                    historicalData = { avgWaitTime: 0, vehicleCount: 0, congestionLevel: "closed" };
+                }
+            }
+
             if (historicalData) {
                 const trendFactor = this.calculateTrendFactor(i);
                 predictions.push({
@@ -158,10 +207,11 @@ class KingHusseinBridgeAI {
         const trendImpact = {
             "low": 0.95,
             "medium": 1.0,
-            "high": 1.05
+            "high": 1.05,
+            "closed": 0 // لا يوجد تأثير إذا كان مغلقًا
         };
 
-        return baseFactor * trendImpact[currentCongestion] * (1 - hoursAhead * 0.02);
+        return baseFactor * (trendImpact[currentCongestion] || 1.0) * (1 - hoursAhead * 0.02);
     }
 
     // كشف الشذوذ
@@ -238,6 +288,13 @@ class KingHusseinBridgeAI {
                     icon: "🚫"
                 });
                 break;
+            case "closed":
+                recommendations.push({
+                    type: "bridge_closed",
+                    message: "الجسر مغلق حاليًا",
+                    icon: "❌"
+                });
+                break;
         }
 
         // توصيات بناءً على التوقعات
@@ -253,7 +310,7 @@ class KingHusseinBridgeAI {
         }
 
         // توصيات بناءً على الطقس
-        if (this.weatherData.condition === "rainy") {
+        if (this.weatherData.condition && this.weatherData.condition.toLowerCase().includes("rain")) {
             recommendations.push({
                 type: "weather_warning",
                 message: "احذر من الأمطار، قد تؤثر على أوقات السفر",
@@ -287,8 +344,70 @@ class KingHusseinBridgeAI {
         const hour = now.getHours();
         const minute = now.getMinutes();
 
-        let statusText = "مغلق";
-        let statusClass = "status-closed";
+        let jordanStatusText = "مغلق";
+        let jordanStatusClass = "status-closed";
+        let palestineStatusText = "مغلق";
+        let palestineStatusClass = "status-closed";
+
+        // السبت مغلق طوال اليوم
+        if (day === 6) {
+            jordanStatusText = "مغلق";
+            jordanStatusClass = "status-closed";
+            palestineStatusText = "مغلق";
+            palestineStatusClass = "status-closed";
+        } 
+        // الجمعة
+        else if (day === 5) {
+            if ((hour === 8 && minute >= 30) || (hour >= 9 && hour < 13)) { // 8:30 ص - 1:00 ظ
+                jordanStatusText = "مفتوح";
+                jordanStatusClass = "status-open";
+                palestineStatusText = "مفتوح";
+                palestineStatusClass = "status-open";
+            } else {
+                jordanStatusText = "مغلق";
+                jordanStatusClass = "status-closed";
+                palestineStatusText = "مغلق";
+                palestineStatusClass = "status-closed";
+            }
+        } 
+        // الأحد - الخميس
+        else if (day >= 0 && day <= 4) {
+            if (hour >= 8 && hour < 14) { // 8:00 ص - 2:00 ظ
+                jordanStatusText = "مفتوح";
+                jordanStatusClass = "status-open";
+                palestineStatusText = "مفتوح";
+                palestineStatusClass = "status-open";
+            } else {
+                jordanStatusText = "مغلق";
+                jordanStatusClass = "status-closed";
+                palestineStatusText = "مغلق";
+                palestineStatusClass = "status-closed";
+            }
+        }
+
+        // جعل الجسر مغلقًا لليوم فقط (بناءً على الطلب الأخير)
+        const today = new Date();
+        const todayDateString = today.toDateString();
+        const lastClosedDateString = localStorage.getItem('lastClosedDate');
+
+        if (todayDateString !== lastClosedDateString) {
+            // إذا كان اليوم ليس هو اليوم الذي تم فيه إغلاق الجسر سابقًا، فقم بإعادة تعيين الحالة
+            localStorage.removeItem('isBridgeClosedToday');
+        }
+
+        if (localStorage.getItem('isBridgeClosedToday') === 'true') {
+            jordanStatusText = "مغلق";
+            jordanStatusClass = "status-closed";
+            palestineStatusText = "مغلق";
+            palestineStatusClass = "status-closed";
+        } else {
+            // إذا كان هناك طلب لإغلاق الجسر لليوم فقط، قم بتعيين الحالة
+            // هذا الجزء يحتاج إلى تفعيل يدوي أو آلية لتشغيله لمرة واحدة
+            // For demonstration, let's assume a flag is set externally or by user action
+            // If you want to force close for today, uncomment the next two lines and redeploy
+            // localStorage.setItem('isBridgeClosedToday', 'true');
+            // localStorage.setItem('lastClosedDate', todayDateString);
+        }
 
         const jordanStatusTextElement = document.getElementById("status-text");
         const jordanStatusIndicatorElement = document.getElementById("status-indicator");
@@ -296,13 +415,13 @@ class KingHusseinBridgeAI {
         const palStatusIndicatorElement = document.getElementById("pal-status-indicator");
 
         if (jordanStatusTextElement && jordanStatusIndicatorElement) {
-            jordanStatusTextElement.textContent = statusText;
-            jordanStatusIndicatorElement.className = `status-indicator ${statusClass}`;
+            jordanStatusTextElement.textContent = jordanStatusText;
+            jordanStatusIndicatorElement.className = `status-indicator ${jordanStatusClass}`;
         }
 
         if (palStatusTextElement && palStatusIndicatorElement) {
-            palStatusTextElement.textContent = statusText;
-            palStatusIndicatorElement.className = `status-indicator ${statusClass}`;
+            palStatusTextElement.textContent = palestineStatusText;
+            palStatusIndicatorElement.className = `status-indicator ${palestineStatusClass}`;
         }
     }
 }
@@ -312,6 +431,8 @@ const bridgeAI = new KingHusseinBridgeAI();
 
 // تصدير للاستخدام العام
 window.bridgeAI = bridgeAI;
+
+
 
 
 
