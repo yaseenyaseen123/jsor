@@ -10,6 +10,10 @@
     <div class="main-wrapper">
         <div class="container">
             <header class="header">
+            <div id="weather-display" class="weather-display">
+                <img id="weather-icon" src="" alt="Weather Icon" class="weather-icon-img">
+                <span id="temperature-display">--°</span>
+            </div>
             <div class="alert-saturday-closed">
                 ⚠️ الجسر مغلق يوم السبت ⚠️
             </div>
@@ -128,35 +132,7 @@
                 </div>
                 <button class="refresh-btn" onclick="refreshTraffic()">تحديث حالة الطرق</button>
             </div>
-
-            <!-- قسم الطقس -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon weather-icon">🌤️</div>
-                    <h2>حالة الطقس</h2>
-                </div>
-                <div class="weather-info" id="weather-content">
-                    <div class="weather-item">
-                        <img id="weather-icon" src="" alt="Weather Icon" class="weather-icon-img">
-                    </div>
-                    <div class="weather-item">
-                        <div class="weather-value" id="temperature">--°</div>
-                        <div class="weather-label">درجة الحرارة</div>
-                    </div>
-                    <div class="weather-item">
-                        <div class="weather-value" id="weather-condition">--</div>
-                        <div class="weather-label">الحالة العامة</div>
-                    </div>
-                    <div class="weather-item">
-                        <div class="weather-value" id="wind-speed">-- كم/س</div>
-                        <div class="weather-label">سرعة الرياح</div>
-                    </div>
-                    <div class="weather-item">
-                        <div class="weather-value" id="visibility">-- كم</div>
-                        <div class="weather-label">مدى الرؤية</div>
-                    </div>
-                </div>
-            <div class="card">
+class="card">
                 <div class="card-header">
                     <div class="card-icon alerts-icon">🔔</div                    <h2>صدقة جارية</h2>               </div>
                 <div id="alerts-content">
