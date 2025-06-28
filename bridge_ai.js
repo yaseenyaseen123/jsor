@@ -404,144 +404,17 @@ class KingHusseinBridgeAI {
             palestineStatusClass = "status-closed";
         } else {
             // إذا كان هناك طلب لإغلاق الجسر لليوم فقط، قم بتعيين الحالة
-            // هذا الجزء يحتاج إلى تفعيل يدوي أو آلية لتشغيله لمرة واحدة
-            // For demonstration, let's assume a flag is set externally or by user action
-            // If you want to force close for today, uncomment the next two lines and redeploy
+            // هذا الجزء من الكود يجب أن يتم تفعيله يدوياً أو بناءً على حدث معين
+            // للحفاظ على الإغلاق لليوم فقط، يمكن تفعيل هذا السطر:
             // localStorage.setItem("isBridgeClosedToday", "true");
             // localStorage.setItem("lastClosedDate", todayDateString);
         }
 
-        document.getElementById("status-text").textContent = jordanStatusText;
-        document.getElementById("status-indicator").className = `status-indicator ${jordanStatusClass}`;
-        document.getElementById("pal-status-text").textContent = palestineStatusText;
-        document.getElementById("pal-status-indicator").className = `status-indicator ${palestineStatusClass}`;
+        document.getElementById("bridge-status").innerHTML = `حالة الجسر الأردني: <span class="${jordanStatusClass}"></span> ${jordanStatusText}`;
+        document.getElementById("palestinian-bridge-status").innerHTML = `حالة الجسر الفلسطيني: <span class="${palestineStatusClass}"></span> ${palestineStatusText}`;
     }
 }
 
-// تهيئة وتشغيل نظام الذكاء الاصطناعي عند تحميل الصفحة
-document.addEventListener("DOMContentLoaded", () => {
-    const bridgeAI = new KingHusseinBridgeAI();
-
-    // تحديث الوقت وحالة الجسر عند التحميل وكل دقيقة
-    updateTime();
-    setInterval(updateTime, 60000);
-
-    // تحديث حالة الجسر الفلسطيني (محاكاة) - تم نقلها إلى bridgeAI.updateBridgeStatus
-
-    // محاكاة تحديث الأخبار
-    function refreshNews() {
-        const newsContent = document.getElementById("news-content");
-        newsContent.innerHTML = 
-            `<div class="news-item">
-                <div class="news-date">25 يونيو 2025</div>
-                <div class="news-title">تحديث من نظام الذكاء الاصطناعي</div>
-                <div class="news-content">تم تحسين دقة التوقعات بنسبة 15% بفضل البيانات الجديدة</div>
-            </div>
-            <div class="news-item">
-                <div class="news-date">25 يونيو 2025</div>
-                <div class="news-title">صيانة دورية</div>
-                <div class="news-content">ستتم صيانة دورية للأنظمة الإلكترونية غداً من 1:00 إلى 1:30 ظهراً</div>
-            </div>
-            <div class="news-item">
-                <div class="news-date">24 يونيو 2025</div>
-                <div class="news-title">حركة سفر نشطة</div>
-                <div class="news-content">يشهد المعبر حركة سفر نشطة، يُنصح بالوصول مبكراً</div>
-            </div>`;
-    }
-
-    // محاكاة تحديث المواعيد
-    function refreshSchedule() {
-        const scheduleContent = document.getElementById("schedule-content");
-        scheduleContent.innerHTML = `
-            <tr>
-                <td>الأحد - الخميس</td>
-                <td>8:00 ص - 2:00 ظ</td>
-            </tr>
-            <tr>
-                <td>الجمعة</td>
-                <td>8:30 ص - 1:00 ظ</td>
-            </tr>
-            <tr>
-                <td>السبت</td>
-                <td>مغلق</td>
-            </tr>
-        `;
-    }
-
-    // تحديث حالة الطرق (محاكاة)
-    function refreshTraffic() {
-        const trafficContent = document.getElementById("traffic-content");
-        const statsGrid = document.getElementById("traffic-stats");
-
-        // Simulate new traffic data
-        const newWaitTime = Math.floor(Math.random() * 60) + 10; // 10-70 minutes
-        const newVehicleCount = Math.floor(Math.random() * 200) + 50; // 50-250 vehicles
-
-        document.getElementById("wait-time").textContent = newWaitTime;
-        document.getElementById("vehicle-count").textContent = newVehicleCount;
-
-        const levels = [
-            { name: "الطريق إلى الجسر", level: Math.random() * 100 },
-            { name: "داخل الجسر", level: (newWaitTime / 70) * 100 }, // Scale based on max wait time
-            { name: "الخروج من الجسر", level: Math.random() * 60 }
-        ];
-        
-        trafficContent.innerHTML = levels.map(item => `
-            <div class="traffic-level">
-                <span>${item.name}:</span>
-                <div class="traffic-bar">
-                    <div class="traffic-fill ${getTrafficClass(item.level)}" style="width: ${item.level}%"></div>
-                </div>
-                <span>${getTrafficText(item.level)}</span>
-            </div>
-        `).join("");
-    }
-
-    function getTrafficClass(level) {
-        if (level < 33) return "traffic-low";
-        if (level < 66) return "traffic-medium";
-        return "traffic-high";
-    }
-
-    function getTrafficText(level) {
-        if (level < 33) return "منخفض";
-        if (level < 66) return "متوسط";
-        return "مرتفع";
-    }
-
-    // تحديث التنبيهات (محاكاة)
-    function refreshAlerts() {
-        const alertsContainer = document.getElementById("alerts-content");
-        alertsContainer.innerHTML = `
-            <div class="alert">
-                <div class="alert-header">
-                    <div class="alert-title">صدقة جارية</div>
-                </div>
-                <div class="alert-content">
-                    هذا الموقع صدقة جارية عني وعن والدي وعن إخواني جميعًا وعن جميع المسلمين.
-                </div>
-            </div>
-        `;
-    }
-
-    // تحديث الوقت
-    function updateTime() {
-        const now = new Date();
-        const timeString = now.toLocaleString("ar-JO", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit"
-        });
-        document.getElementById("last-update").textContent = timeString;
-    }
-
-    // استدعاء الدوال عند التحميل الأولي
-    refreshNews();
-    refreshSchedule();
-    refreshTraffic();
-    refreshAlerts();
-});
+const bridgeAI = new KingHusseinBridgeAI();
 
 
