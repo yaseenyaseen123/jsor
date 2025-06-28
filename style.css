@@ -1,7 +1,7 @@
 /* General Body and Container Styles */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #1a1a1a; /* Dark background */
+    background: #1a1a2a; /* Dark blue-grey background */
     min-height: 100vh;
     color: #e0e0e0; /* Light text */
     line-height: 1.6;
@@ -11,7 +11,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background: #1a1a1a; /* Dark background */
+    background: #1a1a2a; /* Dark blue-grey background */
     padding: 20px 0;
 }
 
@@ -20,7 +20,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    background: #2c2c2c; /* Slightly lighter dark for container */
+    background: #2c2c3c; /* Slightly lighter dark blue-grey for container */
     border-radius: 25px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     border: 1px solid #444;
@@ -31,7 +31,7 @@ body {
 
 /* Header Enhancements */
 .header {
-    background: linear-gradient(145deg, #333333, #111111); /* Dark gradient */
+    background: linear-gradient(145deg, #333343, #111121); /* Dark blue-grey gradient */
     border-radius: 25px;
     padding: 40px;
     margin-bottom: 40px;
@@ -43,8 +43,8 @@ body {
 
 .header h1 {
     font-size: 3.5rem;
-    color: #FFD700; /* Gold */
-    text-shadow: 2px 2px 8px rgba(255, 215, 0, 0.4);
+    color: #007bff; /* Blue */
+    text-shadow: 2px 2px 8px rgba(0, 123, 255, 0.4);
     margin-bottom: 15px;
 }
 
@@ -58,7 +58,7 @@ body {
 #bridge-status, #palestinian-bridge-status {
     font-size: 1.3rem;
     font-weight: 600;
-    color: #FFD700;
+    color: #007bff;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
@@ -104,7 +104,7 @@ body {
 
 /* Card Enhancements */
 .card {
-    background: linear-gradient(145deg, #3a3a3a, #2a2a2a); /* Darker gradient for cards */
+    background: linear-gradient(145deg, #3a3a4a, #2a2a3a); /* Darker blue-grey gradient for cards */
     border-radius: 25px;
     padding: 35px;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
@@ -120,13 +120,13 @@ body {
 }
 
 .card::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 215, 0, 0.1); /* Gold overlay on hover */
+    background: rgba(0, 123, 255, 0.1); /* Blue overlay on hover */
     z-index: 1;
     pointer-events: none;
     transform: scale(0);
@@ -150,7 +150,7 @@ body {
 
 .card h2 {
     font-size: 1.8rem;
-    color: #FFD700; /* Gold */
+    color: #007bff; /* Blue */
     font-weight: 700;
     margin-right: 15px;
 }
@@ -178,14 +178,14 @@ body {
 .taxi-icon,
 .weather-icon,
 .alerts-icon {
-    background: linear-gradient(45deg, #FFD700 0%, #FFA500 100%); /* Gold to Orange */
-    color: #1a1a1a;
+    background: linear-gradient(45deg, #007bff 0%, #0056b3 100%); /* Blue gradient */
+    color: #e0e0e0;
 }
 
 /* Button Styles */
 .refresh-btn {
-    background: linear-gradient(45deg, #FFD700, #FFA500); /* Gold to Orange */
-    color: #1a1a1a;
+    background: linear-gradient(45deg, #007bff, #0056b3); /* Blue gradient */
+    color: #e0e0e0;
     border: none;
     padding: 14px 28px;
     border-radius: 30px;
@@ -194,18 +194,18 @@ body {
     font-weight: 600;
     transition: all 0.3s ease;
     margin-top: 25px;
-    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
 }
 
 .refresh-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
 }
 
 /* Footer Styles */
 .footer {
-    background: linear-gradient(135deg, #333333 0%, #111111 100%); /* Dark gradient */
-    color: #FFD700;
+    background: linear-gradient(135deg, #333343 0%, #111121 100%); /* Dark blue-grey gradient */
+    color: #007bff;
     padding: 25px;
     border-radius: 15px;
     margin-top: 50px;
@@ -220,7 +220,7 @@ body {
 
 /* JETT Info Card */
 .jett-info {
-    background: linear-gradient(145deg, #3a3a3a, #2a2a2a); /* Darker gradient */
+    background: linear-gradient(145deg, #3a3a4a, #2a2a3a); /* Darker blue-grey gradient */
     border-radius: 25px;
     padding: 30px;
     margin-bottom: 40px;
@@ -230,7 +230,7 @@ body {
 }
 
 .jett-info h2 {
-    color: #FFD700;
+    color: #007bff;
     font-size: 2.2rem;
     margin-bottom: 15px;
     font-weight: 700;
@@ -244,24 +244,24 @@ body {
 }
 
 .jett-info a {
-    background: linear-gradient(45deg, #FFD700, #FFA500); /* Gold to Orange */
-    color: #1a1a1a;
+    background: linear-gradient(45deg, #007bff, #0056b3); /* Blue gradient */
+    color: #e0e0e0;
     padding: 15px 30px;
     border-radius: 30px;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
 }
 
 .jett-info a:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
 }
 
 /* Traffic and Weather enhancements */
 .traffic-level, .weather-item {
-    background: #3a3a3a;
+    background: #3a3a4a;
     border-radius: 15px;
     padding: 18px;
     margin-bottom: 12px;
@@ -276,7 +276,7 @@ body {
 }
 
 .stat-item {
-    background: #3a3a3a;
+    background: #3a3a4a;
     border-radius: 15px;
     padding: 25px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -284,12 +284,12 @@ body {
 }
 
 .stat-value {
-    color: #FFD700;
+    color: #007bff;
 }
 
 /* Alerts */
 .alert {
-    background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+    background: linear-gradient(145deg, #3a3a4a, #2a2a3a);
     border: 1px solid #555;
     border-radius: 15px;
     padding: 20px;
@@ -305,7 +305,7 @@ body {
 }
 
 .alert-title {
-    color: #FFD700;
+    color: #007bff;
 }
 
 .alert-warning .alert-title {
@@ -313,23 +313,23 @@ body {
 }
 
 .alert-recommendations li:before {
-    color: #FFD700;
+    color: #007bff;
 }
 
 /* News Item */
 .news-item {
-    background: #3a3a3a;
+    background: #3a3a4a;
     border-radius: 15px;
     padding: 20px;
     margin-bottom: 18px;
-    border-right: 5px solid #FFD700;
+    border-right: 5px solid #007bff;
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     color: #e0e0e0;
 }
 
 .news-item:hover {
-    background: #4a4a4a;
+    background: #4a4a5a;
     transform: translateX(5px);
 }
 
@@ -338,7 +338,7 @@ body {
 }
 
 .news-title {
-    color: #FFD700;
+    color: #007bff;
 }
 
 .news-content {
@@ -361,14 +361,14 @@ body {
 }
 
 .schedule-table th {
-    background: linear-gradient(45deg, #3a3a3a, #2a2a2a);
+    background: linear-gradient(45deg, #3a3a4a, #2a2a3a);
     font-weight: 700;
-    color: #FFD700;
+    color: #007bff;
     border-radius: 10px;
 }
 
 .schedule-table td {
-    background: #4a4a4a;
+    background: #4a4a5a;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     color: #e0e0e0;
@@ -376,11 +376,11 @@ body {
 
 /* Taxi Info Section */
 .taxi-item {
-    background: #3a3a3a;
+    background: #3a3a4a;
     border-radius: 15px;
     padding: 18px;
     margin-bottom: 15px;
-    border-right: 5px solid #FFD700;
+    border-right: 5px solid #007bff;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -389,35 +389,35 @@ body {
 }
 
 .taxi-item span {
-    color: #FFD700;
+    color: #007bff;
 }
 
 .taxi-item a {
-    color: #FFD700;
+    color: #007bff;
 }
 
 .taxi-contact {
-    background: linear-gradient(135deg, #FFD700, #FFA500); /* Gold to Orange */
-    color: #1a1a1a;
+    background: linear-gradient(135deg, #007bff, #0056b3); /* Blue gradient */
+    color: #e0e0e0;
     padding: 20px;
     border-radius: 15px;
     text-align: center;
     margin-top: 25px;
-    box-shadow: 0 8px 15px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 8px 15px rgba(0, 123, 255, 0.4);
 }
 
 .taxi-contact a {
-    color: #1a1a1a;
+    color: #e0e0e0;
 }
 
 /* Weather Section */
 .weather-item {
-    background: #3a3a3a;
+    background: #3a3a4a;
     color: #e0e0e0;
 }
 
 .weather-value {
-    color: #FFD700;
+    color: #007bff;
 }
 
 .weather-label {
@@ -426,14 +426,14 @@ body {
 
 /* Alerts Section (Updated to be just the Sadaqa Jariya message) */
 .sadaqa-jariya-message {
-    background: linear-gradient(135deg, #FFD700, #FFA500); /* Gold to Orange */
-    color: #1a1a1a;
+    background: linear-gradient(135deg, #007bff, #0056b3); /* Blue gradient */
+    color: #e0e0e0;
     padding: 25px;
     border-radius: 20px;
     text-align: center;
     font-size: 1.3rem;
     font-weight: 600;
-    box-shadow: 0 10px 20px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 10px 20px rgba(0, 123, 255, 0.4);
     margin-top: 30px;
 }
 
