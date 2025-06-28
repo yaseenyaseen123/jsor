@@ -346,28 +346,23 @@ class KingHusseinBridgeAI {
         const hour = now.getHours();
         const minute = now.getMinutes();
 
-        let jordanStatusText = "مغلق";
-        let jordanStatusClass = "status-closed";
+        let jordanStatusText = document.getElementById("status-text").textContent;
+        let jordanStatusClass = document.getElementById("status-indicator").className;
+
         let palestineStatusText = "مغلق";
         let palestineStatusClass = "status-closed";
 
         // السبت مغلق طوال اليوم
         if (day === 6) {
-            jordanStatusText = "مغلق";
-            jordanStatusClass = "status-closed";
             palestineStatusText = "مغلق";
             palestineStatusClass = "status-closed";
         } 
         // الجمعة
         else if (day === 5) {
             if ((hour === 8 && minute >= 30) || (hour >= 9 && hour < 13)) { // 8:30 ص - 1:00 ظ
-                jordanStatusText = "مفتوح";
-                jordanStatusClass = "status-open";
                 palestineStatusText = "مفتوح";
                 palestineStatusClass = "status-open";
             } else {
-                jordanStatusText = "مغلق";
-                jordanStatusClass = "status-closed";
                 palestineStatusText = "مغلق";
                 palestineStatusClass = "status-closed";
             }
@@ -375,13 +370,9 @@ class KingHusseinBridgeAI {
         // الأحد - الخميس
         else if (day >= 0 && day <= 4) {
             if (hour >= 8 && hour < 14) { // 8:00 ص - 2:00 ظ
-                jordanStatusText = "مفتوح";
-                jordanStatusClass = "status-open";
                 palestineStatusText = "مفتوح";
                 palestineStatusClass = "status-open";
             } else {
-                jordanStatusText = "مغلق";
-                jordanStatusClass = "status-closed";
                 palestineStatusText = "مغلق";
                 palestineStatusClass = "status-closed";
             }
@@ -398,8 +389,6 @@ class KingHusseinBridgeAI {
         }
 
         if (localStorage.getItem("isBridgeClosedToday") === "true") {
-            jordanStatusText = "مغلق";
-            jordanStatusClass = "status-closed";
             palestineStatusText = "مغلق";
             palestineStatusClass = "status-closed";
         } else {
@@ -410,11 +399,12 @@ class KingHusseinBridgeAI {
             // localStorage.setItem("lastClosedDate", todayDateString);
         }
 
-        document.getElementById("bridge-status").innerHTML = `حالة الجسر الأردني: <span class="${jordanStatusClass}"></span> ${jordanStatusText}`;
+        document.getElementById("pal-status-text").textContent = palestineStatusText;
+        document.getElementById("pal-status-indicator").className = `status-indicator ${palestineStatusClass}`;
+
+        // تحديث حالة الجانب الأردني (لا يتم تغييرها تلقائياً بناءً على الوقت)
+        // document.getElementById("status-text").textContent = jordanStatusText;
+        // document.getElementById("status-indicator").className = jordanStatusClass;
+        document.getElementById("bridge-status").innerHTML = `حالة الجسر الأردني: <span class="${jordanStatusClass.split(" ")[1]}"></span> ${jordanStatusText}`;
         document.getElementById("palestinian-bridge-status").innerHTML = `حالة الجسر الفلسطيني: <span class="${palestineStatusClass}"></span> ${palestineStatusText}`;
     }
-}
-
-const bridgeAI = new KingHusseinBridgeAI();
-
-
