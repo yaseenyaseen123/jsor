@@ -1,4 +1,3 @@
-// نظام الذكاء الاصطناعي المتقدم لمراقبة جسر الملك حسين
 class KingHusseinBridgeAI {
     constructor() {
         this.trafficData = {
@@ -6,11 +5,8 @@ class KingHusseinBridgeAI {
             current: {},
             predictions: {}
         };
-        this.weatherData = {};
         this.eventData = [];
         this.isInitialized = false;
-        this.weatherApiKey = "fb817733e4b94ce6be171837252806"; // مفتاح API الخاص بك
-        this.weatherApiUrl = "http://api.weatherapi.com/v1/current.json";
         
         this.init();
     }
@@ -18,7 +14,7 @@ class KingHusseinBridgeAI {
     async init() {
         console.log("🤖 تهيئة نظام الذكاء الاصطناعي...");
         await this.loadHistoricalData();
-        await this.getCurrentWeather();
+
         this.startRealTimeMonitoring();
         this.isInitialized = true;
         console.log("✅ تم تهيئة النظام بنجاح");
@@ -43,46 +39,7 @@ class KingHusseinBridgeAI {
         });
     }
 
-    // الحصول على بيانات الطقس الحقيقية من WeatherAPI.com
-    async getCurrentWeather() {
-        try {
-            const response = await fetch(`${this.weatherApiUrl}?key=${this.weatherApiKey}&q=Amman&aqi=no`);
-            const data = await response.json();
 
-            if (data && data.current) {
-                this.weatherData = {
-                    condition: data.current.condition.text,
-                    temperature: data.current.temp_c,
-                    icon: data.current.condition.icon
-                };
-                console.log("✅ تم تحديث بيانات الطقس:", this.weatherData);
-                
-                // تحديث درجة الحرارة والأيقونة في الواجهة
-                document.getElementById("temperature-display").textContent = `${this.weatherData.temperature}°`;
-                document.getElementById("weather-icon").src = `https:${this.weatherData.icon}`;
-            } else {
-                console.error("❌ فشل في جلب بيانات الطقس:", data);
-                // استخدام بيانات افتراضية في حالة الفشل
-                this.weatherData = {
-                    condition: "غير معروف",
-                    temperature: "--",
-                    icon: ""
-                };
-                document.getElementById("temperature-display").textContent = `--°`;
-                document.getElementById("weather-icon").src = "";
-            }
-        } catch (error) {
-            console.error("❌ خطأ في الاتصال بـ WeatherAPI:", error);
-            // استخدام بيانات افتراضية في حالة الخطأ
-            this.weatherData = {
-                condition: "غير معروف",
-                temperature: "--",
-                icon: ""
-            };
-            document.getElementById("temperature-display").textContent = `--°`;
-            document.getElementById("weather-icon").src = "";
-        }
-    }
 
     // بدء المراقبة في الوقت الفعلي
     startRealTimeMonitoring() {
@@ -91,7 +48,7 @@ class KingHusseinBridgeAI {
             this.generatePredictions();
             this.detectAnomalies();
             this.updateBridgeStatus();
-            this.getCurrentWeather(); // تحديث الطقس بشكل دوري
+
         }, 30000); // تحديث كل 30 ثانية
         this.updateBridgeStatus(); // تحديث فوري عند التحميل
     }
@@ -104,27 +61,19 @@ class KingHusseinBridgeAI {
 
         // إضافة عشوائية للمحاكاة
         const randomFactor = 0.8 + Math.random() * 0.4; // 0.8 to 1.2
-        const weatherImpact = this.getWeatherImpact();
+
 
         this.trafficData.current = {
             timestamp: new Date(),
-            waitTime: Math.round(baseData.avgWaitTime * randomFactor * weatherImpact),
-            vehicleCount: Math.round(baseData.vehicleCount * randomFactor * weatherImpact),
-            congestionLevel: this.calculateCongestionLevel(baseData.avgWaitTime * randomFactor * weatherImpact),
+            waitTime: Math.round(baseData.avgWaitTime * randomFactor),
+            vehicleCount: Math.round(baseData.vehicleCount * randomFactor),
+            congestionLevel: this.calculateCongestionLevel(baseData.avgWaitTime * randomFactor),
             roadConditions: this.assessRoadConditions(),
             estimatedProcessingTime: this.calculateProcessingTime()
         };
     }
 
-    // تأثير الطقس على الازدحام
-    getWeatherImpact() {
-        // تأثير الطقس بناءً على بيانات WeatherAPI
-        const condition = this.weatherData.condition ? this.weatherData.condition.toLowerCase() : "";
-        if (condition.includes("rain")) return 1.3; // زيادة 30% في الازدحام
-        if (condition.includes("wind")) return 1.1; // زيادة 10%
-        if (condition.includes("cloud")) return 1.05; // زيادة 5%
-        return 1.0; // طقس عادي
-    }
+
 
     // حساب مستوى الازدحام
     calculateCongestionLevel(waitTime) {
@@ -136,8 +85,7 @@ class KingHusseinBridgeAI {
     // تقييم حالة الطرق
     assessRoadConditions() {
         const conditions = ["excellent", "good", "fair", "poor"];
-        const weatherImpact = (this.weatherData.condition && this.weatherData.condition.toLowerCase().includes("rain")) ? 2 : 0;
-        const index = Math.min(Math.floor(Math.random() * 2) + weatherImpact, 3);
+        const index = Math.min(Math.floor(Math.random() * 2), 3);
         return conditions[index];
     }
 
@@ -311,14 +259,7 @@ class KingHusseinBridgeAI {
             }
         }
 
-        // توصيات بناءً على الطقس
-        if (this.weatherData.condition && this.weatherData.condition.toLowerCase().includes("rain")) {
-            recommendations.push({
-                type: "weather_warning",
-                message: "احذر من الأمطار، قد تؤثر على أوقات السفر",
-                icon: "🌧️"
-            });
-        }
+
 
         return recommendations;
     }
@@ -328,7 +269,6 @@ class KingHusseinBridgeAI {
         return {
             current: this.trafficData.current,
             predictions: this.trafficData.predictions,
-            weather: this.weatherData,
             recommendations: this.getSmartRecommendations(),
             systemStatus: {
                 isOnline: true,
@@ -408,3 +348,28 @@ class KingHusseinBridgeAI {
         document.getElementById("bridge-status").innerHTML = `حالة الجسر الأردني: <span class="${jordanStatusClass.split(" ")[1]}"></span> ${jordanStatusText}`;
         document.getElementById("palestinian-bridge-status").innerHTML = `حالة الجسر الفلسطيني: <span class="${palestineStatusClass}"></span> ${palestineStatusText}`;
     }
+
+    // وظيفة تبديل الألوان
+    function applyTheme(theme) {
+        document.body.className = ''; // Remove existing theme classes
+        if (theme !== 'default') {
+            document.body.classList.add(theme + '-theme');
+        }
+        localStorage.setItem('selectedTheme', theme);
+    }
+
+    // تهيئة محدد الألوان عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        const themeSelect = document.getElementById('theme-select');
+        if (themeSelect) {
+            // Load saved theme
+            const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+            applyTheme(savedTheme);
+            themeSelect.value = savedTheme;
+
+            // Add event listener for theme changes
+            themeSelect.addEventListener('change', function() {
+                applyTheme(this.value);
+            });
+        }
+    });
