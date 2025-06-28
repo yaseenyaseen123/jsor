@@ -287,37 +287,18 @@ class KingHusseinBridgeAI {
         const hour = now.getHours();
         const minute = now.getMinutes();
 
-        let statusText = "";
-        let statusClass = "";
+        let statusText = "مغلق";
+        let statusClass = "status-closed";
 
-        // الأحد إلى الخميس: 8:00 ص - 2:00 ظ
-        if (day >= 0 && day <= 4) { // Sunday to Thursday
-            if ((hour > 8 || (hour === 8 && minute >= 0)) && (hour < 14 || (hour === 14 && minute === 0))) {
-                statusText = "مفتوح";
-                statusClass = "status-open";
-            } else {
-                statusText = "مغلق";
-                statusClass = "status-closed";
-            }
-        }
-        // الجمعة: 8:30 ص - 1:00 ظ
-        else if (day === 5) { // Friday
-            if ((hour > 8 || (hour === 8 && minute >= 30)) && (hour < 13 || (hour === 13 && minute === 0))) {
-                statusText = "مفتوح";
-                statusClass = "status-open";
-            } else {
-                statusText = "مغلق";
-                statusClass = "status-closed";
-            }
-        }
-        // السبت: مغلق طوال اليوم
-        else if (day === 6) { // Saturday
-            statusText = "مغلق";
-            statusClass = "status-closed";
-        }
-
+        const jordanStatusTextElement = document.getElementById("status-text");
+        const jordanStatusIndicatorElement = document.getElementById("status-indicator");
         const palStatusTextElement = document.getElementById("pal-status-text");
         const palStatusIndicatorElement = document.getElementById("pal-status-indicator");
+
+        if (jordanStatusTextElement && jordanStatusIndicatorElement) {
+            jordanStatusTextElement.textContent = statusText;
+            jordanStatusIndicatorElement.className = `status-indicator ${statusClass}`;
+        }
 
         if (palStatusTextElement && palStatusIndicatorElement) {
             palStatusTextElement.textContent = statusText;
@@ -331,5 +312,6 @@ const bridgeAI = new KingHusseinBridgeAI();
 
 // تصدير للاستخدام العام
 window.bridgeAI = bridgeAI;
+
 
 
