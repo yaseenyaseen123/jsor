@@ -9,7 +9,7 @@ class KingHusseinBridgeAI {
         this.weatherData = {};
         this.eventData = [];
         this.isInitialized = false;
-        this.weatherApiKey = "7b198c62204b4a00ae271723252806"; // مفتاح API الخاص بك
+        this.weatherApiKey = "fb817733e4b94ce6be171837252806"; // مفتاح API الخاص بك
         this.weatherApiUrl = "http://api.weatherapi.com/v1/current.json";
         
         this.init();
