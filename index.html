@@ -481,6 +481,9 @@
 <body>
     <div class="container">
         <header class="header">
+            <div style="background-color: #e74c3c; color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-size: 1.5em; font-weight: bold; text-align: center;">
+                ⚠️ الجسر مغلق يوم السبت ⚠️
+            </div>
             <h1>🌉 جسر الملك حسين</h1>
             <p>نظام المراقبة الذكي</p>
             <div id="bridge-status">
@@ -625,31 +628,22 @@
             </div>
 
             <!-- قسم التنبيهات -->
+            <div clas            <!-- قسم التنبيهات والإشعارات -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-icon alerts-icon">🚨</div>
-                    <h2>التنبيهات والإشعارات</h2>
-                </div>
-                <div id="alerts-container">
+                    <div class="card-icon alerts-icon">🔔</div                    <h2>صدقة جارية</h2>               </div>
+                <div id="alerts-content">
                     <div class="alert">
                         <div class="alert-header">
-                            <span class="alert-icon">ℹ️</span>
-                            <span class="alert-title">تنبيه هام</span>
-                            <span class="alert-time">الآن</span>
+                            <div class="alert-title">صدقة جارية</div>
                         </div>
-                        <div class="alert-message">صدقه جاريه عني وعن والدي وعن اخواني واخواتي وعن امة المسلمين جميعا
+                        <div class="alert-content">
+                            هذا الموقع صدقة جارية عني وعن والدي وعن إخواني جميعًا وعن جميع المسلمين.
                         </div>
-                    </div>
-                    <div class="alert">
-                        <div class="alert-header">
-                            <span class="alert-icon">ℹ️</span>
-                            <span class="alert-title">معلومة</span>
-                            <span class="alert-time">الآن</span>
-                        </div>
-                        <div class="alert-message">النظام يعمل بشكل طبيعي</div>
                     </div>
                 </div>
                 <button class="refresh-btn" onclick="refreshAlerts()">تحديث التنبيهات</button>
+            </div>هات</button>
             </div>
 
             <!-- قسم تكسي الجسر -->
@@ -661,8 +655,8 @@
                 <div class="taxi-info">
                     <p>للتواصل مع سائقي التاكسي المعتمدين من عمان إلى جسر الملك حسين:</p>
                     <div class="taxi-item">
-                        <span>سفريات السيلاوي:</span>
-                        <a href="tel:00962795299355">00962795299355</a>
+                        <span>اسم السائق 1:</span>
+                        <a href="tel:+9627XXXXXXXX">+9627XXXXXXXX</a>
                     </div>
                     <div class="taxi-item">
                         <span>اسم السائق 2:</span>
@@ -681,9 +675,7 @@
         </div>
 
         <footer class="footer">
-            <p>© 2025 جسر الملك حسين - نظام المراقبة الذكي | آخر تحديث: <span id="last-update"></span></p>
-             
-            <p>تم التصميم بواسطة  فلسطيني 🇵🇸</p>
+            <p>© 2025 جسر الملك حسين - نظام المراقبة الذكي | آخر تحديث: <span id="last-update"></span></p>            <p>تم التصميم بواسطة فلسطيني 🇵🇸</p>
         </footer>
     </div>
 
